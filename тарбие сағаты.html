@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Қауіпсіздік CITY</title>
+<style>
+:root{--navy:#12264a;--navy2:#1d3d73;--blue:#2b7de9;--sky:#d8eeff;--sky2:#b4daff;--green:#27ae60;--red:#e5483e;--yellow:#ffc933;--ink:#10213f}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Trebuchet MS","Segoe UI",system-ui,Arial,sans-serif;color:var(--ink);background:linear-gradient(180deg,#bfe2ff 0%,#e6f4ff 55%,#fff 100%);min-height:100vh;font-size:18px;line-height:1.45;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.85;background:radial-gradient(ellipse 120px 34px at 18% 10%,#fff 60%,transparent 63%),radial-gradient(ellipse 170px 44px at 72% 16%,#fff 60%,transparent 63%),radial-gradient(ellipse 100px 28px at 45% 6%,#fff 60%,transparent 63%);animation:drift 40s linear infinite alternate}
+@keyframes drift{to{transform:translateX(70px)}}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,[tabindex]:focus-visible,input:focus-visible{outline:4px solid var(--yellow);outline-offset:2px}
+
+/* top bar */
+#top{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px;box-shadow:0 4px 14px rgba(10,30,70,.35);flex-wrap:wrap}
+#top .logo{font-weight:900;letter-spacing:.5px;font-size:1.15rem;background:none;border:0;color:#fff;display:flex;align-items:center;gap:8px;padding:4px 6px}
+#top .prog{flex:1;min-width:160px}
+#top .prog small{display:block;font-size:.78rem;opacity:.85}
+.bar{height:14px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd84d,#27ae60);border-radius:99px;transition:width .6s}
+.chip{background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.25);color:#fff;border-radius:99px;padding:8px 14px;font-weight:800;min-height:44px}
+.chip:hover{background:rgba(255,255,255,.25)}
+.score{background:var(--yellow);color:var(--navy);border-radius:99px;padding:8px 16px;font-weight:900;min-height:44px;display:flex;align-items:center}
+main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:18px 14px 40px}
+.screen{display:none}.screen.active{display:block;animation:fadein .35s}
+@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* hero / home */
+.hero{background:var(--navy);color:#fff;border-radius:28px;padding:22px;box-shadow:0 10px 30px rgba(18,38,74,.35)}
+.hero h1{margin:0 0 6px;font-size:clamp(1.7rem,5vw,2.6rem);letter-spacing:1px;text-shadow:0 3px 0 rgba(0,0,0,.25)}
+.hero .sub{margin:0 0 6px;color:#cfe5ff;font-size:clamp(1rem,2.6vw,1.2rem)}
+.hero .lesson{margin:0 0 14px;color:#9fc4f5;font-size:.9rem}
+.mapbox{border-radius:22px;overflow:hidden;border:4px solid #fff;background:#8ed36b;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.mapbox svg{display:block;width:100%;height:auto}
+.zones{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.zone{background:var(--navy2);border:0;border-radius:18px;color:#fff;padding:14px 8px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:96px;transition:.2s;box-shadow:inset 0 -4px 0 rgba(0,0,0,.25)}
+.zone:hover{transform:translateY(-3px);background:#2a54a0}
+.zone .zi{font-size:1.9rem}
+.zone small{font-weight:600;color:#bcd6ff;font-size:.8rem;text-align:center}
+.big{display:block;width:100%;min-height:64px;border:0;border-radius:20px;font-weight:900;font-size:clamp(1.1rem,3vw,1.4rem);padding:14px 20px;background:linear-gradient(180deg,#3d92ff,#2b6fd6);color:#fff;box-shadow:0 6px 0 #1a4a96,0 10px 18px rgba(0,0,0,.2);transition:.15s}
+.big:hover{transform:translateY(-2px)}
+.big:active{transform:translateY(4px);box-shadow:0 2px 0 #1a4a96}
+.big.green{background:linear-gradient(180deg,#3fcf7d,#1f9d56);box-shadow:0 6px 0 #146b3a,0 10px 18px rgba(0,0,0,.2)}
+.big.ghost{background:#fff;color:var(--navy);box-shadow:0 6px 0 #9db9dc}
+.big.yellow{background:linear-gradient(180deg,#ffd84d,#ffb400);color:var(--navy);box-shadow:0 6px 0 #b27c00}
+.start{animation:pulse 2s infinite}
+@keyframes pulse{50%{transform:scale(1.02)}}
+.mlist{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:16px}
+.mcard{display:flex;gap:12px;align-items:center;text-align:left;background:#fff;color:var(--ink);border:3px solid var(--sky2);border-radius:18px;padding:12px;min-height:72px}
+.mcard:hover{border-color:var(--blue)}
+.mcard .mn{flex:none;width:40px;height:40px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:900}
+.mcard small{display:block;color:#4a5f82;font-size:.82rem}
+.mcard.done{border-color:var(--green);background:#eafaf1}.mcard.done .mn{background:var(--green)}
+.mcard.lock{opacity:.7;background:#eef2f8}.mcard.lock .mn{background:#8a97ad}
+.foot{text-align:center;margin-top:16px}
+.link{background:none;border:0;color:#31507f;text-decoration:underline;font-size:.9rem}
+
+/* map */
+.hot{cursor:pointer}
+.hot .art,.hot .pillg{transition:transform .2s;transform-box:fill-box;transform-origin:center bottom}
+.hot:hover .art,.hot:focus-visible .art{transform:translateY(-5px) scale(1.05)}
+.hot:focus-visible{outline:none}
+.hot:focus-visible .pillrect{stroke:var(--yellow);stroke-width:4}
+.hot.lock .art{filter:grayscale(.85) brightness(1.05)}
+.pillrect{fill:#12264a;stroke:#fff;stroke-width:2.5}
+.pillbadge{fill:#ffc933}
+.pn{font:900 14px "Trebuchet MS",Arial,sans-serif;fill:#12264a}
+.pt{font:800 14px "Trebuchet MS",Arial,sans-serif;fill:#fff}
+.done .pillrect{fill:#1f9d56}.done .pillbadge{fill:#fff}
+.lock .pillrect{fill:#6b778c}.lock .pillbadge{fill:#dfe5ee}
+.next .pillrect{animation:glow 1.4s infinite}
+@keyframes glow{50%{stroke:#ffc933;stroke-width:5}}
+.bob{animation:bob 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center bottom}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.tree g{animation:sway 4s ease-in-out infinite;transform-box:fill-box;transform-origin:center bottom}
+@keyframes sway{50%{transform:rotate(3deg)}}
+.tl-r{animation:tlr 4s infinite}.tl-g{animation:tlg 4s infinite}
+@keyframes tlr{0%,45%{opacity:1}55%,100%{opacity:.2}}
+@keyframes tlg{0%,45%{opacity:.2}55%,100%{opacity:1}}
+
+/* quiz */
+.gcard{background:#fff;border:4px solid var(--sky2);border-radius:28px;padding:20px;box-shadow:0 10px 26px rgba(18,38,74,.18)}
+.qtop{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:900;color:var(--navy)}
+.tag{background:var(--sky);color:var(--navy);border-radius:99px;padding:4px 14px;font-size:.85rem}
+.dots{display:flex;gap:6px;margin:10px 0 14px;flex-wrap:wrap}
+.dots i{width:100%;flex:1;min-width:14px;height:10px;border-radius:9px;background:#dbe6f4}
+.dots i.d{background:var(--green)}.dots i.c{background:var(--blue)}
+.qbox{background:linear-gradient(180deg,#f2f9ff,#e4f2ff);border-radius:20px;padding:18px;text-align:center;margin-bottom:14px}
+.qtag{font-weight:900;color:var(--blue);text-transform:uppercase;font-size:.8rem;letter-spacing:1px}
+.qtext{font-size:clamp(1.1rem,2.8vw,1.45rem);font-weight:800;margin:6px 0}
+.signbox{display:inline-block;background:#fff;border-radius:18px;padding:10px;box-shadow:0 4px 12px rgba(0,0,0,.12);margin-top:6px;animation:pop .5s}
+.sign{width:min(210px,52vw);height:auto;display:block}
+.phone{font-size:2.6rem;display:inline-block;animation:ring 1.2s infinite}
+@keyframes ring{0%,100%{transform:rotate(0)}10%,30%,50%{transform:rotate(-14deg)}20%,40%,60%{transform:rotate(14deg)}70%{transform:rotate(0)}}
+.opts{display:grid;gap:12px}
+.opts.keypad{grid-template-columns:repeat(3,1fr)}
+.opts.signs{grid-template-columns:repeat(3,1fr)}
+.opt{display:flex;align-items:center;gap:14px;width:100%;min-height:68px;padding:14px 18px;border-radius:18px;border:3px solid var(--sky2);background:#fff;font-weight:700;text-align:left;transition:.15s;box-shadow:0 4px 0 var(--sky2)}
+.opt:hover:not(:disabled){transform:translateY(-2px);border-color:var(--blue)}
+.opt .ltr{flex:none;width:38px;height:38px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:900}
+.opt.ok{background:#d9f7e6;border-color:var(--green);box-shadow:0 4px 0 #8fd6ae;animation:pop .4s}
+.opt.bad{background:#fff1d1;border-color:#f0a22b;box-shadow:0 4px 0 #f3cc83}
+.opt.dim{opacity:.55}
+.opt:disabled{cursor:default}
+.keypad .opt{justify-content:center;min-height:84px;background:linear-gradient(180deg,#fff,#eaf4ff)}
+.keypad .num{font-size:clamp(1.8rem,6vw,2.6rem);font-weight:900;color:var(--navy);letter-spacing:2px}
+.signs .opt{flex-direction:column;justify-content:center;text-align:center;padding:10px;gap:6px}
+.signs .opt svg{width:100%;max-width:130px;height:auto}
+.cap{display:none;font-size:.8rem;line-height:1.2}
+.answered .cap{display:block}
+.fb{display:flex;gap:14px;align-items:flex-start;margin-top:16px;background:#f2f9ff;border:3px solid var(--sky2);border-radius:20px;padding:16px;animation:pop .35s;flex-wrap:wrap}
+.fb.good{background:#ecfaf2;border-color:#8fd6ae}.fb.soft{background:#fff8e6;border-color:#f3cc83}
+.fb .fi{font-size:2.2rem}
+.fb .ft{flex:1;min-width:200px}.fb p{margin:4px 0}
+.fb .rightis{color:#0b6b36;font-weight:800}
+.fb .big{width:auto;min-width:180px;margin-left:auto}
+@keyframes pop{0%{transform:scale(.85);opacity:0}70%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+.intro{text-align:center;padding:8px}
+.intro .bigico{font-size:4rem;animation:bob 2.5s infinite}
+.intro h2{margin:4px 0 8px;color:var(--navy);font-size:clamp(1.5rem,4vw,2.1rem)}
+.itext{text-align:left;max-width:760px;margin:0 auto 18px}
+.itext .big{margin-top:6px}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:12px 0}
+.nrow{display:flex;gap:12px;align-items:center;background:var(--sky);border-radius:16px;padding:10px 12px}
+.nrow b.n{background:var(--navy);color:#fff;border-radius:12px;padding:6px 10px;font-size:1.25rem;min-width:70px;text-align:center}
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}
+.catc{background:var(--sky);border-radius:16px;padding:10px;text-align:center;font-size:.85rem}
+.catc svg{width:74px;height:74px;display:block;margin:0 auto 4px}
+.catc b{display:block;color:var(--navy)}
+.steps{counter-reset:s;list-style:none;padding:0;margin:10px 0}
+.steps li{counter-increment:s;background:var(--sky);border-radius:14px;padding:10px 12px 10px 52px;margin:8px 0;position:relative}
+.steps li::before{content:counter(s);position:absolute;left:10px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:900}
+.helpbox{background:#f2f9ff;border:3px dashed var(--blue);border-radius:20px;padding:14px;text-align:left;margin:14px 0}
+.helpbox h3{margin:0 0 6px;color:var(--navy)}
+.result{text-align:center}
+.result .stars{font-size:3rem;color:#ffb400;letter-spacing:6px;animation:pop .6s}
+.result .stars span{color:#d5dbe6}
+.result h2{margin:0;color:var(--navy)}
+.result .scorebig{font-size:2.6rem;font-weight:900;color:var(--blue)}
+.result .scorebig small{font-size:1rem;color:#4a5f82}
+.rbtns{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:16px}
+.sumt{width:100%;max-width:520px;margin:10px auto;border-collapse:collapse;text-align:left}
+.sumt td{padding:6px 10px;border-bottom:2px solid var(--sky)}.sumt td:last-child{text-align:right;font-weight:900}
+.code{display:flex;gap:10px;justify-content:center;margin:6px 0 14px}
+.cell{width:clamp(44px,12vw,64px);height:clamp(54px,14vw,76px);display:grid;place-items:center;border-radius:14px;background:#e4ecf7;border:3px solid #b9c8de;font-weight:900;font-size:clamp(1.6rem,6vw,2.4rem);color:#8a97ad}
+.cell.open{background:linear-gradient(180deg,#ffe27a,#ffc933);border-color:#d99d00;color:var(--navy);animation:pop .5s}
+
+/* game 4 */
+.g4h{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.hint{color:#3d5578;font-size:.95rem;margin:4px 0 10px}
+.pool{display:flex;flex-wrap:wrap;gap:10px;min-height:90px;background:#eef6ff;border:3px dashed var(--sky2);border-radius:20px;padding:12px;justify-content:center}
+.dcard{touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;background:#fff;border:3px solid #9cc4f5;border-radius:16px;padding:10px 14px;font-weight:700;font-size:.98rem;max-width:300px;box-shadow:0 4px 0 #9cc4f5;line-height:1.3}
+.dcard:hover{border-color:var(--blue)}
+.dcard.sel{border-color:var(--yellow);box-shadow:0 0 0 4px rgba(255,201,51,.6);transform:scale(1.03)}
+.dcard.dragging{position:fixed;z-index:60;cursor:grabbing;transform:rotate(-3deg) scale(1.04);box-shadow:0 14px 26px rgba(0,0,0,.3);margin:0}
+.dcard.ph{visibility:hidden;border-style:dashed}
+.dcard.placed{cursor:default;font-size:.85rem;padding:8px 10px;animation:pop .4s;box-shadow:none}
+.dcard.good{border-color:var(--green);background:#e9faf0}.dcard.learn{border-color:#f0a22b;background:#fff6df}
+.buckets{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.bucket{border-radius:22px;padding:12px;min-height:200px;border:4px solid;transition:.2s}
+.bucket h3{margin:0 0 8px;text-align:center;font-size:1.2rem}
+.bucket.safe{background:#e8f9ee;border-color:#6cc98f}.bucket.safe h3{color:#127a3e}
+.bucket.danger{background:#ffeceb;border-color:#f19189}.bucket.danger h3{color:#b5271d}
+.bucket.hover{transform:scale(1.03);box-shadow:0 0 0 5px rgba(255,201,51,.8)}
+.bucket.armed{animation:pulse 1s infinite;cursor:pointer}
+.drop{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+
+/* certificate */
+.certtools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;background:#fff;border-radius:20px;padding:12px;border:3px solid var(--sky2)}
+.certtools input{flex:1;min-width:200px;font:inherit;font-weight:700;padding:12px 14px;border-radius:14px;border:3px solid var(--sky2)}
+.certtools .big{width:auto;flex:1;min-width:180px}
+.certificate{background:#fffdf4;border:14px double #c99a1e;border-radius:10px;padding:clamp(18px,4vw,40px);text-align:center;color:#1b2a49;box-shadow:0 12px 30px rgba(0,0,0,.25);position:relative;overflow:hidden}
+.certificate::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(43,125,233,.04) 0 14px,transparent 14px 28px);pointer-events:none}
+.certificate>*{position:relative}
+.certificate .ct{letter-spacing:6px;font-weight:900;font-size:clamp(1.6rem,5vw,2.8rem);color:#12264a}
+.certificate .role{font-size:clamp(1.3rem,4vw,2.2rem);font-weight:900;color:#c0392b;margin:4px 0}
+.certificate .nm{font-size:clamp(1.8rem,6vw,3.2rem);font-weight:900;border-bottom:4px solid #c99a1e;display:inline-block;padding:0 24px;margin:10px 0;color:#12264a;min-width:60%}
+.certificate p{margin:8px auto;max-width:720px}
+.cfoot{display:flex;justify-content:space-around;align-items:center;gap:10px;margin-top:18px;flex-wrap:wrap}
+.cfoot .sc{font-weight:900;font-size:1.3rem;color:#12264a}
+.shield{width:100px;height:100px;margin:0 auto}
+
+/* fx */
+#fx{position:fixed;inset:0;pointer-events:none;z-index:100;overflow:hidden}
+.cf{position:fixed;width:10px;height:14px;border-radius:2px;animation:cf 1.3s ease-out forwards}
+@keyframes cf{to{transform:translate(var(--dx),var(--dy)) rotate(var(--rot));opacity:0}}
+.em{position:fixed;inset:0;display:grid;place-items:center;background:rgba(18,38,74,.25)}
+.emcard{background:#fff;border-radius:26px;padding:18px 26px;text-align:center;border:5px solid var(--green);animation:pop .4s;max-width:90vw;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.emcard .ring{font-size:2.6rem;animation:ring .8s infinite;display:inline-block}
+.emcard b{display:block;font-size:2.6rem;color:var(--navy);line-height:1}
+.emcard span{font-weight:800}
+.veh{position:absolute;bottom:14%;left:0;width:min(260px,60vw);animation:drive 2.3s ease-in forwards}
+@keyframes drive{from{transform:translateX(-300px)}to{transform:translateX(calc(100vw + 40px))}}
+.siren{animation:sir .3s infinite alternate}
+@keyframes sir{from{fill:#e5483e}to{fill:#2b7de9}}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:120;background:var(--navy);color:#fff;border-radius:18px;padding:14px 20px;font-weight:700;max-width:92vw;box-shadow:0 10px 26px rgba(0,0,0,.35);animation:pop .3s}
+
+@media(max-width:640px){
+ body{font-size:16px}
+ .zones{gap:8px}.zone{min-height:84px;padding:10px 4px}.zone small{display:none}
+ .opts.signs,.opts.keypad{gap:8px}
+ .buckets{grid-template-columns:1fr}
+ .bucket{min-height:130px}
+ .gcard{padding:14px;border-radius:22px}
+ .fb .big{width:100%}
+ #top .chip span.t{display:none}
+}
+@media print{
+ body *{visibility:hidden}
+ #certificate,#certificate *{visibility:visible}
+ #certificate{position:absolute;left:0;top:0;width:100%;box-shadow:none}
+ body::before{display:none}
+ @page{size:landscape;margin:8mm}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+<noscript>Бұл ойынға JavaScript қажет.</noscript>
+
+<!-- Жол белгілері (SVG, ҚР жол қозғалысы ережелеріндегі белгілердің бейнесі) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+ <!-- Ескерту: жаяу жүргіншілер өткелі -->
+ <symbol id="s-ped" viewBox="0 0 100 100">
+  <polygon points="50,5 96,88 4,88" fill="#d3121a" stroke="#d3121a" stroke-width="6" stroke-linejoin="round"/>
+  <polygon points="50,26 78.5,77.5 21.5,77.5" fill="#fff" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+  <circle cx="48" cy="47" r="3.4" fill="#111"/>
+  <path d="M49 51 L48 61 M48 61 L44 69 M48 61 L53 68 M49 54 L44 59 M49 54 L54 58" stroke="#111" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+  <path d="M26 77.5h6l3-7h-6z M37 77.5h6l3-7h-6z M48 77.5h6l3-7h-6z M59 77.5h6l3-7h-6z" fill="#111"/>
+ </symbol>
+ <!-- Ескерту: бағдаршаммен реттеу -->
+ <symbol id="s-light" viewBox="0 0 100 100">
+  <polygon points="50,5 96,88 4,88" fill="#d3121a" stroke="#d3121a" stroke-width="6" stroke-linejoin="round"/>
+  <polygon points="50,26 78.5,77.5 21.5,77.5" fill="#fff" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+  <rect x="42" y="46" width="16" height="31" rx="3" fill="#111"/>
+  <circle cx="50" cy="53.5" r="3.8" fill="#e8222a"/><circle cx="50" cy="61.5" r="3.8" fill="#ffc700"/><circle cx="50" cy="69.5" r="3.8" fill="#2ea64b"/>
+ </symbol>
+ <!-- Басымдық: басты жол -->
+ <symbol id="s-main" viewBox="0 0 100 100">
+  <polygon points="50,3 97,50 50,97 3,50" fill="#fff" stroke="#111" stroke-width="3" stroke-linejoin="round"/>
+  <polygon points="50,15 85,50 50,85 15,50" fill="#ffc400" stroke="#111" stroke-width="2.5" stroke-linejoin="round"/>
+ </symbol>
+ <!-- Басымдық: жол беріңіз -->
+ <symbol id="s-yield" viewBox="0 0 100 100">
+  <polygon points="5,12 95,12 50,92" fill="#d3121a" stroke="#d3121a" stroke-width="6" stroke-linejoin="round"/>
+  <polygon points="23,22.7 77,22.7 50,70.7" fill="#fff" stroke="#fff" stroke-width="4" stroke-linejoin="round"/>
+ </symbol>
+ <!-- Басымдық: STOP -->
+ <symbol id="s-stop" viewBox="0 0 100 100">
+  <polygon id="oct" points="94.35,68.37 68.37,94.35 31.63,94.35 5.65,68.37 5.65,31.63 31.63,5.65 68.37,5.65 94.35,31.63" fill="#d3121a" stroke="#fff" stroke-width="3"/>
+  <polygon points="94.35,68.37 68.37,94.35 31.63,94.35 5.65,68.37 5.65,31.63 31.63,5.65 68.37,5.65 94.35,31.63" transform="translate(50 50) scale(.9) translate(-50 -50)" fill="none" stroke="#fff" stroke-width="2.5"/>
+  <text x="50" y="59" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="25" fill="#fff">STOP</text>
+ </symbol>
+ <!-- Тыйым: кіруге тыйым салынады -->
+ <symbol id="s-noentry" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="47" fill="#fff" stroke="#c9d3e3" stroke-width="1"/>
+  <circle cx="50" cy="50" r="43" fill="#d3121a"/>
+  <rect x="19" y="43" width="62" height="14" fill="#fff"/>
+ </symbol>
+ <!-- Тыйым: жылдамдық 40 -->
+ <symbol id="s-speed40" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="47" fill="#d3121a"/>
+  <circle cx="50" cy="50" r="34" fill="#fff"/>
+  <text x="50" y="63" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="36" fill="#111">40</text>
+ </symbol>
+ <!-- Тыйым: тұрақтауға тыйым -->
+ <symbol id="s-nopark" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="47" fill="#d3121a"/>
+  <circle cx="50" cy="50" r="37" fill="#1560bd"/>
+  <line x1="21" y1="21" x2="79" y2="79" stroke="#d3121a" stroke-width="9"/>
+ </symbol>
+ <!-- Нұсқау: жаяу жүргіншілер жолы -->
+ <symbol id="s-pedpath" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="47" fill="#fff" stroke="#c9d3e3"/><circle cx="50" cy="50" r="43" fill="#1560bd"/>
+  <circle cx="50" cy="26" r="5.5" fill="#fff"/>
+  <path d="M50 36 L48 56 M48 56 L40 77 M48 56 L58 75 M49 42 L38 53 M49 42 L61 51" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none"/>
+ </symbol>
+ <!-- Нұсқау: түзу жүру -->
+ <symbol id="s-straight" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="47" fill="#fff" stroke="#c9d3e3"/><circle cx="50" cy="50" r="43" fill="#1560bd"/>
+  <path d="M50 18 L73 44 H58 V82 H42 V44 H27 Z" fill="#fff"/>
+ </symbol>
+ <!-- Нұсқау: оңға бұрылу -->
+ <symbol id="s-right" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="47" fill="#fff" stroke="#c9d3e3"/><circle cx="50" cy="50" r="43" fill="#1560bd"/>
+  <path d="M38 82 V58 Q38 46 50 46 H56" stroke="#fff" stroke-width="12" fill="none"/>
+  <polygon points="54,28 80,46 54,64" fill="#fff"/>
+ </symbol>
+ <!-- Ақпараттық: автобус аялдамасы -->
+ <symbol id="s-bus" viewBox="0 0 100 100">
+  <rect x="2" y="2" width="96" height="96" rx="10" fill="#fff" stroke="#c9d3e3"/><rect x="7" y="7" width="86" height="86" rx="6" fill="#1560bd"/>
+  <text x="50" y="71" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="62" fill="#fff">A</text>
+ </symbol>
+ <!-- Ақпараттық: бір жақты қозғалыс -->
+ <symbol id="s-oneway" viewBox="0 0 100 100">
+  <rect x="2" y="2" width="96" height="96" rx="10" fill="#fff" stroke="#c9d3e3"/><rect x="7" y="7" width="86" height="86" rx="6" fill="#1560bd"/>
+  <path d="M50 16 L76 46 H59 V84 H41 V46 H24 Z" fill="#fff"/>
+ </symbol>
+ <!-- Сервис: бірінші медициналық көмек -->
+ <symbol id="s-aid" viewBox="0 0 100 100">
+  <rect x="2" y="2" width="96" height="96" rx="10" fill="#fff" stroke="#c9d3e3"/><rect x="7" y="7" width="86" height="86" rx="6" fill="#1560bd"/>
+  <rect x="24" y="24" width="52" height="52" rx="3" fill="#fff"/>
+  <rect x="44" y="30" width="12" height="40" fill="#d3121a"/><rect x="30" y="44" width="40" height="12" fill="#d3121a"/>
+ </symbol>
+ <!-- Сервис: жанармай құю бекеті -->
+ <symbol id="s-fuel" viewBox="0 0 100 100">
+  <rect x="2" y="2" width="96" height="96" rx="10" fill="#fff" stroke="#c9d3e3"/><rect x="7" y="7" width="86" height="86" rx="6" fill="#1560bd"/>
+  <rect x="26" y="22" width="30" height="54" rx="4" fill="#fff"/>
+  <rect x="31" y="28" width="20" height="15" fill="#1560bd"/>
+  <rect x="20" y="76" width="42" height="6" fill="#fff"/>
+  <path d="M56 36 H66 Q72 36 72 42 V62 Q72 69 77 69 Q81 69 81 62 V46" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+ </symbol>
+ <!-- Сервис: тамақтану орны -->
+ <symbol id="s-food" viewBox="0 0 100 100">
+  <rect x="2" y="2" width="96" height="96" rx="10" fill="#fff" stroke="#c9d3e3"/><rect x="7" y="7" width="86" height="86" rx="6" fill="#1560bd"/>
+  <rect x="29" y="22" width="4" height="22" rx="2" fill="#fff"/><rect x="37" y="22" width="4" height="22" rx="2" fill="#fff"/><rect x="45" y="22" width="4" height="22" rx="2" fill="#fff"/>
+  <rect x="29" y="38" width="20" height="9" rx="4" fill="#fff"/><rect x="36" y="44" width="6" height="38" rx="3" fill="#fff"/>
+  <ellipse cx="66" cy="34" rx="9" ry="13" fill="#fff"/><rect x="63" y="44" width="6" height="38" rx="3" fill="#fff"/>
+ </symbol>
+</defs>
+</svg>
+
+<header id="top">
+ <button class="logo" data-go="home" aria-label="Басты бет">🚦 ҚАУІПСІЗДІК CITY</button>
+ <div class="prog">
+  <small id="progTxt">Прогресс: 0 / 5 миссия</small>
+  <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progBar"><i id="progFill"></i></div>
+ </div>
+ <div class="score" id="scoreTop">⭐ 0</div>
+ <button class="chip" id="soundBtn" aria-label="Дыбысты қосу/өшіру">🔊</button>
+ <button class="chip" data-go="home">🏙 <span class="t">Қала</span></button>
+</header>
+
+<main>
+ <!-- БАСТЫ БЕТ -->
+ <section id="home" class="screen active">
+  <div class="hero">
+   <h1>ҚАУІПСІЗДІК CITY</h1>
+   <p class="sub">Өзіңді қорға. Досыңа көмектес. Қауіпсіз жолды таңда!</p>
+   <p class="lesson">«Буллингтен қорған! / Дос бол, лайк!» · Қауіпсіздік сабағы №11 «Қазақстандағы сенім телефондары мен жедел қызметтердің нөмірлері» · ЖЖЕ №3 «Жол белгілері»</p>
+   <div class="mapbox" id="mapbox"></div>
+   <div class="zones">
+    <button class="zone" data-go="g1"><span class="zi">🤝</span>Достық<small id="z-g1">Достық пен құрмет</small></button>
+    <button class="zone" data-go="g2"><span class="zi">🚨</span>Көмек<small id="z-g2">Жедел көмек</small></button>
+    <button class="zone" data-go="g3"><span class="zi">🚸</span>Жол<small id="z-g3">Қауіпсіз жол</small></button>
+   </div>
+   <button class="big start" id="startBtn">Ойынды бастау</button>
+   <div class="mlist" id="mlist"></div>
+   <div class="foot"><button class="link" id="resetBtn">Прогресті тазалап, қайта бастау</button></div>
+  </div>
+ </section>
+
+ <section id="g1" class="screen"><div class="gcard"></div></section>
+ <section id="g2" class="screen"><div class="gcard"></div></section>
+ <section id="g3" class="screen"><div class="gcard"></div></section>
+ <section id="g4" class="screen"><div class="gcard"></div></section>
+ <section id="fin" class="screen"><div class="gcard"></div></section>
+
+ <section id="cert" class="screen">
+  <div class="certtools">
+   <input id="certName" maxlength="40" placeholder="Аты-жөніңді жаз" aria-label="Аты-жөніңіз">
+   <button class="big green" id="printBtn">🖨 Басып шығару / PDF</button>
+   <button class="big ghost" data-go="home" style="width:auto;flex:1;min-width:160px">🏙 Қалаға оралу</button>
+  </div>
+  <div class="certificate" id="certificate">
+   <svg class="shield" viewBox="0 0 100 110" aria-hidden="true"><path d="M50 4 L92 18 V54 Q92 88 50 106 Q8 88 8 54 V18 Z" fill="#12264a" stroke="#c99a1e" stroke-width="5"/><polygon points="50,28 57,45 76,46 61,58 66,76 50,66 34,76 39,58 24,46 43,45" fill="#ffc933"/></svg>
+   <div class="ct">СЕРТИФИКАТ</div>
+   <div class="role">«Қауіпсіздік елшісі»</div>
+   <p>Осы сертификат берілді:</p>
+   <div class="nm" id="certNm">Оқушы</div>
+   <p>«Қауіпсіздік CITY» веб-квестінің барлық миссиясын сәтті орындап, буллингтен қорғану жолдарын, жедел қызмет нөмірлерін (101, 102, 103, 104, 111, 112) және жол белгілерін меңгергені үшін.</p>
+   <div class="cfoot"><div>📅 <span id="certDate"></span></div><div class="sc">⭐ Жалпы ұпай: <span id="certScore">0</span></div><div>🏙 Қауіпсіздік CITY</div></div>
+  </div>
+ </section>
+</main>
+
+<div id="fx" aria-hidden="true"></div>
+
+<script>
+"use strict";
+/* ---------- көмекші функциялар ---------- */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const KEY="kauipsizdik-city-v1";
+let S={done:{},score:{},sound:true,name:""};
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s)S=Object.assign(S,s)}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+
+const M={
+ g1:{n:1,name:"Буллинг детекторы",short:"Буллинг детекторы",max:60},
+ g2:{n:2,name:"Көмекке асық",short:"Көмекке асық",max:60},
+ g3:{n:3,name:"Жол белгілерінің детективі",short:"Жол белгілері",max:100},
+ g4:{n:4,name:"Қауіпсіз бе, қауіпті ме?",short:"Қауіпсіз бе?",max:100},
+ fin:{n:5,name:"Қауіпсіздік кодын тап",short:"Қауіпсіздік коды",max:100}
+};
+const ORDER=["g1","g2","g3","g4","fin"];
+const unlocked=()=>!!(S.done.g1&&S.done.g2&&S.done.g3);
+const next=()=>ORDER.find(k=>!S.done[k]&&(k!=="fin"||unlocked()))||null;
+const total=()=>Object.values(S.score).reduce((a,b)=>a+(+b||0),0);
+const stateOf=k=>S.done[k]?"done":(k==="fin"&&!unlocked())?"lock":(next()===k?"next":"open");
+
+/* ---------- дыбыс ---------- */
+let ac=null;
+function tone(f,d,type="sine",v=.15,when=0){
+ if(!S.sound)return;
+ try{
+  const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+  ac=ac||new C();if(ac.state==="suspended")ac.resume();
+  const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+when;
+  o.type=type;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.02);g.gain.exponentialRampToValueAtTime(.001,t+d);
+  o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d+.05);
+ }catch(e){}
+}
+const sfx={
+ click(){tone(520,.07,"square",.05)},
+ ok(){tone(660,.12);tone(880,.2,"sine",.15,.11)},
+ no(){tone(300,.18,"triangle",.12);tone(240,.25,"triangle",.1,.15)},
+ win(){[523,659,784,1047].forEach((f,i)=>tone(f,.25,"sine",.15,i*.14))},
+ siren(){for(let i=0;i<6;i++)tone(i%2?620:880,.18,"sawtooth",.05,i*.2)},
+ lock(){tone(180,.2,"square",.07)}
+};
+function burst(n=30,x,y){
+ const fx=$("#fx"),cols=["#ffc933","#2b7de9","#27ae60","#e5483e","#ffffff","#7ec8ff"];
+ x=x??innerWidth/2;y=y??innerHeight/3;
+ for(let i=0;i<n;i++){
+  const d=document.createElement("i");d.className="cf";
+  d.style.left=x+"px";d.style.top=y+"px";d.style.background=cols[i%cols.length];
+  d.style.setProperty("--dx",(Math.random()*500-250)+"px");d.style.setProperty("--dy",(Math.random()*400-120)+"px");d.style.setProperty("--rot",(Math.random()*720)+"deg");
+  fx.appendChild(d);setTimeout(()=>d.remove(),1400);
+ }
+}
+let toastT;
+function toast(msg){
+ let t=$("#toast");if(t)t.remove();
+ t=document.createElement("div");t.id="toast";t.setAttribute("role","status");t.textContent=msg;document.body.appendChild(t);
+ clearTimeout(toastT);toastT=setTimeout(()=>t.remove(),4200);
+}
+
+/* ---------- жедел қызметтер ---------- */
+const SERV={
+ "101":{name:"Өрт сөндіру және құтқару қызметі",c:"#e5483e"},
+ "102":{name:"Полиция",c:"#2b6fd6"},
+ "103":{name:"Жедел жәрдем",c:"#f4f7fb",dark:true},
+ "104":{name:"Газ қызметі",c:"#f0a500"},
+ "111":{name:"Бала сенім телефоны",c:"#8e5bd6"},
+ "112":{name:"Бірыңғай құтқару қызметі",c:"#e8730c"}
+};
+function vehicle(num){
+ const s=SERV[num],txt=s.dark?"#d3121a":"#fff";
+ return `<svg viewBox="0 0 250 110"><rect x="8" y="30" width="172" height="54" rx="10" fill="${s.c}" stroke="#12264a" stroke-width="3"/>
+ <path d="M180 44h32l22 24v16h-54z" fill="${s.c}" stroke="#12264a" stroke-width="3" stroke-linejoin="round"/>
+ <path d="M190 50h18l15 17h-33z" fill="#cfe9ff" stroke="#12264a" stroke-width="2"/>
+ <text x="94" y="68" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="30" fill="${txt}">${num}</text>
+ <rect x="88" y="16" width="38" height="14" rx="5" class="siren" fill="#e5483e"/>
+ <circle cx="55" cy="86" r="15" fill="#222"/><circle cx="55" cy="86" r="6" fill="#bbb"/><circle cx="200" cy="86" r="15" fill="#222"/><circle cx="200" cy="86" r="6" fill="#bbb"/></svg>`;
+}
+function emergency(num){
+ const d=document.createElement("div");d.className="em";
+ d.innerHTML=`<div class="emcard"><span class="ring">📞</span><b>${num}</b><span>${SERV[num].name}</span><div>Қоңырау қабылданды! Көмек жолда 🚀</div></div><div class="veh">${vehicle(num)}</div>`;
+ $("#fx").appendChild(d);sfx.siren();setTimeout(()=>d.remove(),2700);
+}
+
+/* ---------- қала картасы ---------- */
+const tree=(x,y)=>`<g transform="translate(${x},${y})" class="tree"><g><rect x="-3" y="4" width="6" height="12" rx="2" fill="#8a5a33"/><circle cx="0" cy="-4" r="15" fill="#2f9e4f" stroke="#1d6b34" stroke-width="2"/><circle cx="-5" cy="-8" r="5" fill="#6fd08a" opacity=".7"/></g></g>`;
+function pill(x,num,text,state){
+ const w=56+text.length*8.3,icon=state==="done"?"✓":state==="lock"?"🔒":num;
+ return `<g class="pillg" transform="translate(${x},0)"><rect class="pillrect" x="${-w/2}" y="-17" width="${w}" height="34" rx="17"/><circle class="pillbadge" cx="${-w/2+19}" cy="0" r="12"/><text class="pn" x="${-w/2+19}" y="5" text-anchor="middle">${icon}</text><text class="pt" x="${-w/2+38}" y="5">${text}</text></g>`;
+}
+const hot=(k,aria,tx,ty,art,px,py)=>{
+ const st=stateOf(k);
+ return `<g class="hot ${st}" data-go="${k}" role="button" tabindex="0" aria-label="${aria}"><g transform="translate(${tx},${ty})"><g class="art">${art}</g><g transform="translate(${px},${py})">${pill(0,M[k].n,M[k].short,st)}</g></g></g>`;
+};
+const win=(x,y,w=22,h=20)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="#bfe6ff" stroke="#12264a" stroke-width="2.5"/><line x1="${x+w/2}" y1="${y}" x2="${x+w/2}" y2="${y+h}" stroke="#12264a" stroke-width="1.5"/>`;
+const shadow=`<ellipse cx="100" cy="108" rx="96" ry="9" fill="rgba(0,0,0,.18)"/>`;
+const O=`stroke="#12264a" stroke-width="3" stroke-linejoin="round"`;
+const SCHOOL=`${shadow}<rect x="20" y="40" width="160" height="68" ${O} fill="#ffbd59"/><polygon points="10,42 100,6 190,42" ${O} fill="#e5483e"/><circle cx="100" cy="26" r="10" fill="#fff" stroke="#12264a" stroke-width="2.5"/><path d="M100 26V19M100 26l5 3" stroke="#12264a" stroke-width="2" stroke-linecap="round"/>
+ <rect x="70" y="42" width="60" height="15" rx="3" fill="#fff" stroke="#12264a" stroke-width="2"/><text x="100" y="53.500" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="10" fill="#12264a">МЕКТЕП</text>
+ ${win(30,64)}${win(56,64)}${win(122,64)}${win(148,64)}<rect x="86" y="72" width="28" height="36" rx="4" fill="#8a4b2a" stroke="#12264a" stroke-width="2.5"/><circle cx="108" cy="92" r="2" fill="#ffd84d"/><rect x="78" y="108" width="44" height="6" fill="#d9dde6" stroke="#12264a" stroke-width="2"/>
+ <g class="bob"><line x1="178" y1="40" x2="178" y2="2" stroke="#12264a" stroke-width="3"/><polygon points="178,2 196,8 178,14" fill="#2b7de9" stroke="#12264a" stroke-width="2"/></g>`;
+const POLICE=`${shadow}<rect x="20" y="44" width="160" height="64" ${O} fill="#4f8ee8"/><rect x="12" y="34" width="176" height="14" rx="3" ${O} fill="#1f3b73"/><rect x="80" y="6" width="40" height="30" rx="4" ${O} fill="#1f3b73"/><polygon points="100,10 103.500,18 112,18.500 105.500,24 107.500,32 100,27.500 92.500,32 94.500,24 88,18.500 96.500,18" fill="#ffc933"/>
+ <rect x="62" y="52" width="76" height="14" rx="3" fill="#12264a"/><text x="100" y="63" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="10" fill="#fff">ПОЛИЦИЯ</text>
+ ${win(28,72,20,18)}${win(52,72,20,18)}<rect x="86" y="74" width="28" height="34" rx="3" fill="#dfeeff" stroke="#12264a" stroke-width="2.5"/>
+ <g class="bob"><rect x="130" y="90" width="48" height="16" rx="5" fill="#fff" stroke="#12264a" stroke-width="2.5"/><rect x="140" y="82" width="26" height="12" rx="4" fill="#fff" stroke="#12264a" stroke-width="2.5"/><rect x="148" y="78" width="10" height="5" rx="2" class="siren" fill="#e5483e"/><circle cx="141" cy="108" r="5" fill="#222"/><circle cx="168" cy="108" r="5" fill="#222"/><rect x="132" y="96" width="44" height="4" fill="#2b6fd6"/></g>`;
+const FIRE=`${shadow}<rect x="14" y="44" width="172" height="64" ${O} fill="#e5483e"/><rect x="8" y="36" width="184" height="12" rx="3" ${O} fill="#8f1f1a"/><rect x="146" y="4" width="36" height="36" rx="3" ${O} fill="#c93a31"/><circle cx="164" cy="20" r="9" fill="#fff" stroke="#12264a" stroke-width="2"/><path d="M164 20V13M164 20l5 3" stroke="#12264a" stroke-width="2" stroke-linecap="round"/>
+ <rect x="30" y="52" width="110" height="14" rx="3" fill="#fff" stroke="#12264a" stroke-width="2"/><text x="85" y="63" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="10" fill="#c0261c">ӨРТ СӨНДІРУ</text>
+ <rect x="28" y="70" width="52" height="38" rx="3" fill="#fff3d6" stroke="#12264a" stroke-width="2.5"/><rect x="90" y="70" width="52" height="38" rx="3" fill="#fff3d6" stroke="#12264a" stroke-width="2.5"/>
+ <path d="M30 78H78M30 86H78M30 94H78M92 78H140M92 86H140M92 94H140" stroke="#e0c58a" stroke-width="2"/>
+ <circle cx="164" cy="92" r="8" fill="#ffd84d" stroke="#12264a" stroke-width="2"/><path d="M164 84v-6" stroke="#12264a" stroke-width="3"/>`;
+const HOSP=`${shadow}<rect x="24" y="30" width="152" height="78" ${O} fill="#fff"/><rect x="16" y="22" width="168" height="12" rx="3" ${O} fill="#3a7bd5"/>
+ <rect x="56" y="38" width="88" height="15" rx="3" fill="#3a7bd5"/><text x="100" y="49.500" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="10.500" fill="#fff">АУРУХАНА</text>
+ <circle cx="100" cy="76" r="18" fill="#fff" stroke="#12264a" stroke-width="2.5"/><rect x="94" y="64" width="12" height="24" fill="#d3121a"/><rect x="88" y="70" width="24" height="12" fill="#d3121a"/>
+ ${win(34,62,24,20)}${win(34,86,24,16)}${win(142,62,24,20)}${win(142,86,24,16)}<rect x="78" y="98" width="44" height="10" fill="#3a7bd5" stroke="#12264a" stroke-width="2.500"/>
+ <g class="bob"><rect x="94" y="2" width="12" height="20" fill="#d3121a" stroke="#12264a" stroke-width="2"/><rect x="90" y="6" width="20" height="12" fill="#d3121a" stroke="#12264a" stroke-width="2"/></g>`;
+const person=(c,dx=0)=>`<g transform="translate(${dx},0)"><circle cx="0" cy="-12" r="4.500" fill="#ffd2a8" stroke="#12264a" stroke-width="1.500"/><rect x="-4.500" y="-7" width="9" height="13" rx="3" fill="${c}" stroke="#12264a" stroke-width="1.500"/></g>`;
+const car=(c,len=32)=>`<g><rect x="${-len/2}" y="-8" width="${len}" height="16" rx="5" fill="${c}" stroke="#12264a" stroke-width="2"/><rect x="-7" y="-6" width="${len/2-2}" height="12" rx="3" fill="#cfe9ff" stroke="#12264a" stroke-width="1.5"/><circle cx="${-len/2+7}" cy="8" r="3.500" fill="#222"/><circle cx="${len/2-7}" cy="8" r="3.500" fill="#222"/></g>`;
+function mapSVG(){
+ const ring="M150,50 H850 A90,90 0 0 1 940,140 V480 A90,90 0 0 1 850,570 H150 A90,90 0 0 1 60,480 V140 A90,90 0 0 1 150,50 Z";
+ const lane1="M150,64 H850 A76,76 0 0 1 926,140 V480 A76,76 0 0 1 850,556 H150 A76,76 0 0 1 74,480 V140 A76,76 0 0 1 150,64 Z";
+ const lane2="M150,36 H850 A104,104 0 0 1 954,140 V480 A104,104 0 0 1 850,584 H150 A104,104 0 0 1 46,480 V140 A104,104 0 0 1 150,36 Z";
+ let z="";
+ for(let x=476;x<=524;x+=8){z+=`<rect x="${x}" y="236" width="5" height="18" fill="#fff"/><rect x="${x}" y="366" width="5" height="18" fill="#fff"/>`}
+ for(let y=288;y<=332;y+=8){z+=`<rect x="414" y="${y}" width="18" height="5" fill="#fff"/><rect x="568" y="${y}" width="18" height="5" fill="#fff"/>`}
+ const trees=[[110,108],[430,110],[110,258],[110,372],[430,372],[110,516],[430,516],[560,110],[890,110],[890,258],[560,372],[890,372],[560,516],[890,516]].map(p=>tree(p[0],p[1])).join("");
+ const crossArt=`<circle cx="500" cy="310" r="78" fill="transparent"/>
+  <g transform="translate(418,283)"><rect x="-2" y="-38" width="4" height="38" fill="#555"/><use href="#s-ped" x="-19" y="-76" width="38" height="38"/></g>
+  <g transform="translate(548,283)"><rect x="-2" y="-30" width="4" height="30" fill="#444"/><rect x="-10" y="-76" width="20" height="46" rx="5" fill="#12264a" stroke="#fff" stroke-width="1.5"/><circle cx="0" cy="-65" r="5.500" fill="#e5483e" class="tl-r"/><circle cx="0" cy="-53" r="5.500" fill="#ffc933" opacity=".5"/><circle cx="0" cy="-41" r="5.500" fill="#27ae60" class="tl-g"/></g>
+  <g transform="translate(476,246)"><g>${person("#2b7de9")}<animateTransform attributeName="transform" type="translate" values="0 0;48 0;0 0" dur="7s" repeatCount="indefinite"/></g></g>
+  <g transform="translate(524,246)"><g>${person("#e5483e")}<animateTransform attributeName="transform" type="translate" values="0 0;-48 0;0 0" dur="6s" repeatCount="indefinite"/></g></g>`;
+ const cars=`<g><animateMotion dur="26s" repeatCount="indefinite" rotate="auto" path="${lane1}"/>${car("#e5483e")}</g>
+  <g><animateMotion dur="34s" begin="-12s" repeatCount="indefinite" rotate="auto" path="${lane1}"/>${car("#ffc933")}</g>
+  <g><animateMotion dur="40s" begin="-5s" repeatCount="indefinite" rotate="auto" path="${lane2}"/>${car("#2b7de9",52)}</g>
+  <g><animateMotion dur="30s" begin="-20s" repeatCount="indefinite" rotate="auto" path="${lane2}"/>${car("#27ae60")}</g>`;
+ return `<svg viewBox="0 0 1000 620" role="group" aria-label="Қауіпсіздік CITY қаласының картасы">
+ <rect width="1000" height="620" fill="#8ed36b"/><ellipse cx="270" cy="190" rx="190" ry="90" fill="#9fe07c" opacity=".7"/><ellipse cx="730" cy="440" rx="190" ry="90" fill="#9fe07c" opacity=".7"/>
+ <g fill="none" stroke-linecap="butt"><path d="${ring}" stroke="#3e4658" stroke-width="64"/><path d="M500 50V570M60 310H940" stroke="#3e4658" stroke-width="64"/>
+ <path d="${ring}" stroke="#646d80" stroke-width="56"/><path d="M500 50V570M60 310H940" stroke="#646d80" stroke-width="56"/>
+ <path d="${ring}" stroke="#fff" stroke-width="3" stroke-dasharray="16 14" opacity=".8"/><path d="M500 50V570M60 310H940" stroke="#fff" stroke-width="3" stroke-dasharray="16 14" opacity=".8"/></g>
+ <rect x="472" y="282" width="56" height="56" fill="#646d80"/>${z}${trees}
+ ${hot("g1","1-миссия: Буллинг детекторы. Мектеп",160,120,SCHOOL,100,130)}
+ ${hot("g4","4-миссия: Қауіпсіз бе, қауіпті ме? Полиция бөлімі",640,120,POLICE,100,130)}
+ ${hot("g2","2-миссия: Көмекке асық. Өрт сөндіру бекеті",160,345,FIRE,100,130)}
+ ${hot("fin","5-миссия: Қауіпсіздік кодын тап. Аурухана",640,345,HOSP,100,130)}
+ <g class="hot ${stateOf("g3")}" data-go="g3" role="button" tabindex="0" aria-label="3-миссия: Жол белгілерінің детективі. Жаяу жүргіншілер өткелі"><g class="art">${crossArt}</g><g transform="translate(500,312)">${pill(0,3,M.g3.short,stateOf("g3"))}</g></g>
+ ${cars}</svg>`;
+}
+
+/* ---------- навигация ---------- */
+function showScreen(id){
+ $$(".screen").forEach(s=>s.classList.toggle("active",s.id===id));
+ scrollTo({top:0,behavior:"instant"in window?"instant":"auto"});
+}
+function open(k){
+ if(k==="home"){sfx.click();renderHome();showScreen("home");return}
+ if(k==="fin"&&!unlocked()){sfx.lock();toast("🔒 Қорытынды миссия 1, 2 және 3-миссиядан кейін ашылады: Буллинг детекторы, Көмекке асық, Жол белгілері.");return}
+ if(k==="cert"){if(!S.done.fin){sfx.lock();toast("🏅 Сертификат қорытынды миссиядан кейін беріледі.");return}sfx.click();renderCert();showScreen("cert");return}
+ sfx.click();showScreen(k);START[k]();
+}
+document.addEventListener("click",e=>{const t=e.target.closest("[data-go]");if(t)open(t.dataset.go)});
+document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches("g.hot")){e.preventDefault();open(e.target.dataset.go)}});
+$("#soundBtn").onclick=()=>{S.sound=!S.sound;save();updateTop();if(S.sound)sfx.ok()};
+$("#resetBtn").onclick=()=>{if(confirm("Барлық прогресс пен ұпай өшіріледі. Қайта бастаймыз ба?")){S.done={};S.score={};save();renderHome();updateTop()}};
+
+function updateTop(){
+ const n=ORDER.filter(k=>S.done[k]).length,p=Math.round(n/5*100);
+ $("#progFill").style.width=p+"%";$("#progBar").setAttribute("aria-valuenow",p);
+ $("#progTxt").textContent=`Прогресс: ${n} / 5 миссия`;
+ $("#scoreTop").textContent="⭐ "+total();
+ $("#soundBtn").textContent=S.sound?"🔊":"🔇";
+}
+function renderHome(){
+ $("#mapbox").innerHTML=mapSVG();
+ ["g1","g2","g3"].forEach(k=>{$("#z-"+k).textContent=S.done[k]?`✓ ${S.score[k]} ұпай`:{g1:"Достық пен құрмет",g2:"Жедел көмек",g3:"Қауіпсіз жол"}[k]});
+ $("#mlist").innerHTML=ORDER.map(k=>{
+  const st=stateOf(k),m=M[k];
+  const tx=st==="done"?`✓ Орындалды · ${S.score[k]} / ${m.max} ұпай`:st==="lock"?"🔒 1–3 миссиядан кейін ашылады":"Бастау ▶";
+  return `<button class="mcard ${st}" data-go="${k}"><span class="mn">${m.n}</span><span><b>${m.name}</b><small>${tx}</small></span></button>`;
+ }).join("");
+ const nx=next(),sb=$("#startBtn"),any=ORDER.some(k=>S.done[k]);
+ if(!nx){sb.textContent="🏅 Сертификатты көру";sb.dataset.go="cert"}
+ else{sb.textContent=any?`Жалғастыру ▶ ${M[nx].n}. ${M[nx].name}`:"🚀 Ойынды бастау";sb.dataset.go=nx}
+ updateTop();
+}
+
+/* ---------- ортақ: кіріспе, викторина, нәтиже ---------- */
+function intro(root,o){
+ root.innerHTML=`<div class="intro"><div class="bigico">${o.ico}</div><h2>${o.title}</h2><div class="itext">${o.html}<button class="big go">${o.btn||"Бастаймыз!"}</button></div></div>`;
+ $(".go",root).onclick=()=>{sfx.click();o.go()};
+}
+function complete(key,score){
+ S.done[key]=true;S.score[key]=Math.max(S.score[key]||0,score);save();updateTop();
+}
+function result(root,o){
+ complete(o.key,o.score);
+ const p=o.score/o.max,st=p>=.8?3:p>=.5?2:1;
+ const msg=p>=.8?"Тамаша жұмыс! Сен нағыз қорғаушысың!":p>=.5?"Жақсы нәтиже! Қайта қарап, біліміңді бекіте аласың.":"Жақсы бастама! Қателесу — үйренудің бір бөлігі. Қайта көріп, дұрыс жауаптарды еске түсірейік.";
+ root.innerHTML=`<div class="result"><div class="stars">${"★".repeat(st)}<span>${"★".repeat(3-st)}</span></div><h2>${o.title}: аяқталды!</h2><p>${msg}</p><div class="scorebig">+${o.score} <small>/ ${o.max} ұпай</small></div><p>Бірінші жауабы дұрыс: ${o.right} / ${o.total}</p>${o.extra||""}<div class="rbtns"></div></div>`;
+ const box=$(".rbtns",root);
+ (o.btns||[]).concat([{t:"🔁 Қайта ойнау",cls:"ghost",f:o.replay},{t:"🏙 Қалаға оралу",cls:"",f:()=>open("home")}]).forEach(b=>{
+  const e=document.createElement("button");e.className="big "+(b.cls||"");e.textContent=b.t;e.onclick=()=>{sfx.click();b.f()};box.appendChild(e);
+ });
+ sfx.win();burst(60);scrollTo({top:0,behavior:"smooth"});
+}
+function quiz(root,cfg){
+ let i=0,score=0,right=0,answered=false;
+ const n=cfg.items.length,items=cfg.items.map(it=>Object.assign({},it,{opts:it.fixed?it.opts.slice():shuffle(it.opts)}));
+ function show(){
+  answered=false;const it=items[i],lay=it.layout||"list";
+  root.innerHTML=`<div class="qwrap"><div class="qtop"><span class="tag">${cfg.title}</span><span>${i+1} / ${n}</span></div>
+  <div class="dots">${items.map((_,k)=>`<i class="${k<i?"d":k===i?"c":""}"></i>`).join("")}</div>
+  ${cfg.top?cfg.top(i):""}
+  <div class="qbox"><div class="qtag">${it.tag||""}</div><p class="qtext">${it.q}</p>${it.visual||""}</div>
+  <div class="opts ${lay}">${it.opts.map((o,k)=>lay==="keypad"?`<button class="opt" data-k="${k}" aria-label="${o.t}"><span class="num">${o.t}</span></button>`:lay==="signs"?`<button class="opt" data-k="${k}" aria-label="Нұсқа ${k+1}">${o.t}<span class="cap">${o.cap}</span></button>`:`<button class="opt" data-k="${k}"><span class="ltr">${"АБВГ"[k]}</span><span>${o.t}</span></button>`).join("")}</div>
+  <div class="fb-slot"></div></div>`;
+  $$(".opt",root).forEach(b=>b.onclick=()=>answer(+b.dataset.k,b));
+ }
+ function answer(k){
+  if(answered)return;answered=true;
+  const it=items[i],o=it.opts[k],ok=!!o.ok,good=it.opts.find(x=>x.ok);
+  $$(".opt",root).forEach((b,j)=>{b.disabled=true;if(it.opts[j].ok)b.classList.add("ok");else if(j===k)b.classList.add("bad");else b.classList.add("dim")});
+  $(".qwrap",root).classList.add("answered");
+  if(ok){score+=cfg.pts;right++;sfx.ok();const r=$(".opt.ok",root).getBoundingClientRect();burst(26,r.left+r.width/2,r.top)}else sfx.no();
+  const label=good.cap||good.t.replace(/<[^>]+>/g,"");
+  let body="";
+  if(ok)body=`<p>${o.note||""} ${o.note?"":it.why}</p>${o.note&&it.why&&cfg.alwaysWhy?`<p>${it.why}</p>`:""}`;
+  else body=`<p>${o.note||""}</p><p class="rightis">✔ Дұрыс жауап: ${label}</p>${it.why?`<p>${it.why}</p>`:""}`;
+  const last=i===n-1;
+  $(".fb-slot",root).innerHTML=`<div class="fb ${ok?"good":"soft"}" role="status"><div class="fi">${ok?"🎉":"💙"}</div><div class="ft"><b>${ok?"Дұрыс! +"+cfg.pts+" ұпай":"Ештеңе етпейді! Бірге түсінейік."}</b>${body}</div><button class="big ${ok?"green":""} nxt">${last?"Нәтижені көру 🏁":"Келесі →"}</button></div>`;
+  $(".nxt",root).onclick=()=>{sfx.click();if(last)finish();else{i++;show();scrollTo({top:0,behavior:"smooth"})}};
+  $(".fb",root).scrollIntoView({behavior:"smooth",block:"nearest"});
+  if(cfg.onAnswer)cfg.onAnswer(it,ok,i,root);
+ }
+ function finish(){
+  result(root,{key:cfg.key,title:cfg.title,score,max:n*cfg.pts,right,total:n,extra:cfg.extra&&cfg.extra(score),btns:cfg.btns,replay:cfg.replay});
+  if(cfg.onFinish)cfg.onFinish(score);
+ }
+ show();
+}
+
+/* ---------- 1-ойын: Буллинг детекторы ---------- */
+const G1=[
+ {tag:"Кибербуллинг",q:"Сыныптық чатта біреу Айдардың ыңғайсыз суретін жіберді. Бәрі күліп, мазақтап жатыр. Сен не істейсің?",why:"Суретті таратпау, дәлелді сақтау, жәбірленушіні қолдау және ересекке айту — буллингті тоқтатудың дұрыс жолы.",opts:[
+  {t:"Күлкі белгісін қойып, суретті достарыма да жіберемін.",note:"Суретті тарату — буллингке қатысу деген сөз. Бір «лайк» немесе күлкі белгісі жәбірленушіге қатты ауыр тиюі мүмкін."},
+  {t:"Суретті таратпаймын, скриншот сақтаймын, Айдарға қолдау жазамын және мұғалімге көрсетемін.",ok:1,note:"Дұрыс! Сен дәлелді сақтадың, досыңа қолдау көрсеттің және ересектің көмегін сұрадың. Дос бол, лайк — бірақ мазақтауға емес, қолдауға!"},
+  {t:"Ештеңе істемеймін, бұл менің ісім емес.",note:"Үнсіз қалу буллингті тоқтатпайды. Тіпті шағын қадам — қолдау сөзі немесе ересекке айту — жағдайды өзгерте алады."}]},
+ {tag:"Мазақтау",q:"Үзілісте сыныптастарың Дәулетті толықтығы үшін лақап атпен мазақтап жатыр. Дәулет қысылып, үнсіз тұр.",why:"Әзіл мен мазақтың айырмасы бар: әзілге бәрі күледі, ал мазақтан біреу жәбір көреді.",opts:[
+  {t:"Мен де бір-екі әзіл айтамын, ештеңе етпейді ғой.",note:"Бірге мазақтау жәбірленушінің жағдайын қиындатады. Әзіл — бәріне күлкілі болғанда ғана әзіл."},
+  {t:"Сабырмен «Бұл жағымсыз, тоқтаңдар» деймін де, Дәулеттің қасына барамын.",ok:1,note:"Дұрыс! Тыныш әрі нық сөз және жәбірленушінің қасында болу мазақшыларға әсер етеді. Қайталанса, мұғалімге айт."},
+  {t:"Мазақтаушыларды қатты ұрсып, төбелесемін.",note:"Күш көрсету жағдайды ушықтырады, өзің де қиындыққа тап боласың. Сабыр сақтап, ересектің көмегін сұрау қауіпсіздеу."}]},
+ {tag:"Шеттету",q:"Сыныпқа жаңа оқушы келді. Балалар оны ойынға алмай, бірге отырғысы келмейді.",why:"Шеттету де буллингтің бір түрі. Жылы сөз бен шақыру жаңа оқушыға ортаға қосылуға көмектеседі.",opts:[
+  {t:"Бәрі қалай етсе, мен де солай етемін.",note:"Көпшілікке ілесу оңай көрінуі мүмкін, бірақ жалғыздықта қалған бала қатты қиналады."},
+  {t:"Оны ойынға шақырып, танысамын, қасына отырамын.",ok:1,note:"Дұрыс! Бір жылы сөз бен шақыру жаңа оқушыға достарын табуға көмектеседі. Сен достықтың бастамасын жасадың."},
+  {t:"Өзі қосылсын, менің басым қатты.",note:"Жаңа ортада бала ұялшақ болуы мүмкін. Алғашқы қадамды жасау — достықтың кілті."}]},
+ {tag:"Қорқыту",q:"Мектептен шығарда үлкен бала сені тоқтатып: «Ақшаңды бер, әйтпесе ұрамын, ешкімге айтпа!» деп қорқытады.",why:"Қорқытқанда үнсіз қалмай, қауіпсіз жерге барып, сенімді ересекке айту керек. Қауіп төнсе — 102, ал сөйлесетін адам керек болса — 111.",opts:[
+  {t:"Ақшаны беріп, ешкімге айтпаймын.",note:"Бір рет берсең, қайта талап етуі мүмкін. Үнсіз қалу қорқытуды күшейтеді."},
+  {t:"Адамдар көп жаққа не мектепке барып, дереу ата-анама немесе мұғалімге айтамын. Қауіп төнсе — 102.",ok:1,note:"Дұрыс! Қауіпсіз жерге баруың және ересекке айтуың — ең сенімді жол. Өмірге қауіп төнсе, 102 нөміріне қоңырау шал."},
+  {t:"Достарымды жинап, оны қорқытып жауап қайтарамын.",note:"Жауап ретінде қорқыту жанжалды үлкейтеді. Ересектерден көмек сұрау — қауіпсіз әрі күшті шешім."}]},
+ {tag:"Кибербуллинг",q:"Әлеуметтік желіде бейтаныс адам жеке хабарлама жазып, қорлайды және «Ешкімге айтпа» дейді.",why:"Қорлаушыға жауап бермей, дәлел (скриншот) сақтап, адамды бұғаттап, шағымданып, ата-анаға көрсету керек.",opts:[
+  {t:"Қатты жауап жазып, мен де қорлаймын.",note:"Жауап жазу жанжалды қыздырады, қорлаушы дәл осыны күтеді."},
+  {t:"Жауап бермеймін, скриншот сақтаймын, адамды бұғаттап, шағымданамын да, ата-анама көрсетемін.",ok:1,note:"Дұрыс! Бұғаттау, шағым және скриншот — желідегі қауіптен қорғайтын үш қадам. Ересектің көмегі де қажет."},
+  {t:"«Құпия болсын» деп ешкімге айтпаймын.",note:"Құпия сақтау қорлаушыға ғана пайда. Сенімді адамға айту — өзіңді қорғау жолы."}]},
+ {tag:"Куә болу",q:"Дәлізде үлкен оқушылар кіші сыныптағы баланы итеріп жатыр. Сен жалғызсың.",why:"Өзің араласып төбелеспей, ересекті шақыру қауіпсіз. Кейін жәбірленушіні жұбату да маңызды.",opts:[
+  {t:"Видеоға түсіріп, желіге саламын.",note:"Видеоны тарату жәбірленушіні қайта-қайта қорлайды. Дәлел керек болса, оны тек мұғалімге немесе ата-анаға көрсет."},
+  {t:"Өзім араласып ұрыспаймын, бірден мұғалімді немесе күзетшіні шақырып, кейін баланы жұбатамын.",ok:1,note:"Дұрыс! Ересекті шақыру — қорқақтық емес, ақылды әрі қауіпсіз әрекет. Жұбатуың баланы қолдайды."},
+  {t:"Көрмегендей өтіп кетемін.",note:"Қорқу — қалыпты сезім, бірақ көрмегендей өту көмектеспейді. Ересекті шақыру — үлкен ерлік."}]}
+];
+const G1HELP=`<div class="helpbox"><h3>🆘 Қауіпсіз көмек сұрау жолдары</h3>
+<ol class="steps"><li><b>Тоқта.</b> Жауап қайтармай, тыныс алып, сабыр сақта.</li><li><b>Дәлелді сақта.</b> Скриншот, хабарлама, күні мен уақыты.</li><li><b>Сенімді адамға айт.</b> Ата-анаға, сынып жетекшісіне, мектеп психологына немесе әлеуметтік педагогқа.</li></ol>
+<p>📞 <b>111</b> — Бала сенім телефоны: тегін, құпия, тәулік бойы жұмыс істейді.<br>📞 <b>102</b> — полиция: өмірге немесе денсаулыққа қауіп төнгенде.<br>📞 <b>112</b> — бірыңғай құтқару қызметі: қай нөмірге қоңырау шалуды білмесең.</p></div>`;
+function runG1(){
+ quiz($("#g1 .gcard"),{key:"g1",title:"Буллинг детекторы",pts:10,items:G1,extra:()=>G1HELP,replay:runG1});
+}
+
+/* ---------- 2-ойын: Көмекке асық ---------- */
+const G2=[
+ {n:"101",q:"Көрші үйдің терезесінен қою түтін шығып, жалын көрінеді.",why:"101 — өрт сөндіру және құтқару қызметі. Өрт кезінде қауіпсіз жерге шығып, мекенжайыңды нақты айт."},
+ {n:"102",q:"Көшеде бөтен адам досыңның телефонын тартып алып, қашып кетті.",why:"102 — полиция. Ұрлық, төбелес, қорқыту сияқты құқық бұзушылықта қоңырау шалынады."},
+ {n:"103",q:"Досың жүгіріп келе жатып құлап, басын қатты соғып, есінен танып қалды.",why:"103 — жедел жәрдем. Ауыр жарақат немесе кенеттен жағдай нашарлағанда қоңырау шалынады."},
+ {n:"104",q:"Үйде газ иісі сезіледі.",why:"104 — газ қызметі. Жарықты қоспа, от жақпа, терезені аш, үйден шығып барып қоңырау шал."},
+ {n:"111",q:"Сыныптастарың сені мазақтап, қорқытады. Не істерін білмей, біреумен сөйлескің келеді.",why:"111 — Бала сенім телефоны: тегін және құпия, сені мұқият тыңдайтын маман бар."},
+ {n:"112",q:"Су тасқыны басталды, бірақ қандай қызметті шақыру керегін білмейсің.",why:"112 — бірыңғай құтқару қызметі: қандай қызмет керек екенін білмесең де, төтенше жағдайда 112-ге қоңырау шал."}
+].map(x=>({tag:"Жағдаят → нөмір",q:x.q,visual:'<div class="phone">📱</div>',layout:"keypad",fixed:true,why:x.why,opts:["101","102","103","104","111","112"].map(t=>({t,ok:t===x.n}))}));
+function startG2(){
+ const rows=Object.keys(SERV).map(n=>`<div class="nrow"><b class="n">${n}</b><span>${SERV[n].name}</span></div>`).join("");
+ intro($("#g2 .gcard"),{ico:"🚒",title:"Көмекке асық",html:`<p>Қазақстандағы жедел қызмет нөмірлерін жаттап ал. Жағдаятты оқып, дұрыс нөмірді таңда!</p><div class="nums">${rows}</div><p>Нөмірге қоңырау шалғанда <b>сабыр сақта</b>, не болғанын, <b>мекенжайыңды</b> және атыңды айт.</p>`,btn:"Нөмірлерді жаттадым — бастаймыз!",go:runG2});
+}
+function runG2(){
+ quiz($("#g2 .gcard"),{key:"g2",title:"Көмекке асық",pts:10,items:G2,replay:runG2,
+  onAnswer:(it,ok)=>{if(ok){const n=it.opts.find(o=>o.ok).t;emergency(n)}}});
+}
+
+/* ---------- 3-ойын: Жол белгілерінің детективі ---------- */
+const CATS={warn:"Ескерту белгісі",prio:"Басымдық белгісі",proh:"Тыйым салу белгісі",mand:"Нұсқау (міндетті) белгісі",info:"Ақпараттық-нұсқағыш белгі",serv:"Сервис белгісі"};
+const SG={
+ ped:{n:"Жаяу жүргіншілер өткелі",c:"warn",why:"Қызыл жиекті үшбұрыш — ескерту белгісі: алдыда жаяу жүргіншілер өткелі бар, жүргізуші жылдамдықты азайтуы тиіс."},
+ light:{n:"Бағдаршаммен реттеу",c:"warn",why:"Үшбұрыштағы бағдаршам алдыда бағдаршам бар екенін ескертеді. Оның түсіне мұқият болу керек."},
+ main:{n:"Басты жол",c:"prio",why:"Сары ромб — басымдық белгісі. Бұл жолмен келе жатқан көлік қиылыста бірінші өтеді."},
+ yield:{n:"Жол беріңіз",c:"prio",why:"Төңкерілген үшбұрыш — «Жол беріңіз». Қиылыста басты жолмен келе жатқандарға жол беру керек."},
+ stop:{n:"Тоқтамай жүруге тыйым салынады (STOP)",c:"prio",why:"Сегізбұрыш тек STOP белгісіне тән. Толық тоқтап, жол бос екеніне көз жеткізбей жүруге болмайды."},
+ noentry:{n:"Кіруге тыйым салынады",c:"proh",why:"Қызыл дөңгелек пен ақ жолақ — «Кіруге тыйым». Бұл бағытта көлікпен кіруге болмайды."},
+ speed40:{n:"Жылдамдықты шектеу (40 км/сағ)",c:"proh",why:"Қызыл жиекті дөңгелек — тыйым белгісі. Санды көрсетілген жылдамдықтан (40 км/сағ) асыруға болмайды."},
+ nopark:{n:"Тұраққа тұруға тыйым салынады",c:"proh",why:"Көк дөңгелек, қызыл жиек және қиғаш сызық — тұраққа тұруға тыйым."},
+ pedpath:{n:"Жаяу жүргіншілер жолы",c:"mand",why:"Көк дөңгелек — міндетті нұсқау белгісі. Бұл жол тек жаяу жүргіншілерге арналған."},
+ straight:{n:"Түзу жүру",c:"mand",why:"Көк дөңгелектегі ақ көрсеткі — тек көрсетілген бағытта жүруді талап етеді."},
+ right:{n:"Оңға бұрылу",c:"mand",why:"Көк дөңгелектегі көрсеткі — тек оңға бұрылуға болады."},
+ bus:{n:"Автобус аялдамасы",c:"info",why:"Көк төртбұрыш — ақпараттық-нұсқағыш белгі. Мұнда автобус аялдамасы бар."},
+ oneway:{n:"Бір жақты қозғалысты жол",c:"info",why:"Көк төртбұрыштағы көрсеткі — жолмен тек бір бағытта жүруге болады."},
+ aid:{n:"Бірінші медициналық көмек пункті",c:"serv",why:"Көк төртбұрыштағы ақ шаршы ішіндегі қызыл крест — сервис белгісі: жақын жерде алғашқы медициналық көмек көрсетіледі."},
+ fuel:{n:"Жанар-жағармай құю бекеті",c:"serv",why:"Колонка суреті — жанармай құю бекеті бар."},
+ food:{n:"Тамақтану орны",c:"serv",why:"Шанышқы мен қасық — тамақтануға болатын орын."}
+};
+const SIGN=(k,label)=>`<svg class="sign" viewBox="0 0 100 100" role="img" aria-label="${label||SG[k].n}"><use href="#s-${k}"/></svg>`;
+function g3items(){
+ const plan=[["ped","A"],["light","B"],["main","A"],["yield","B"],["stop","A"],["noentry","B"],["speed40","A"],["pedpath","B"],["bus","A"],["aid","B"]];
+ return plan.map(([k,t])=>{
+  const others=shuffle(Object.keys(SG).filter(x=>x!==k&&SG[x].n!==SG[k].n)).slice(0,2);
+  const why=`<b>${CATS[SG[k].c]}.</b> ${SG[k].why}`;
+  if(t==="A")return{tag:"Белгіні атауымен сәйкестендір",q:"Бұл жол белгісі қалай аталады?",visual:`<div class="signbox">${SIGN(k,"Жол белгісі")}</div>`,why,opts:[k,...others].map(x=>({t:SG[x].n,ok:x===k}))};
+  return{tag:"Атауды белгімен сәйкестендір",q:`«${SG[k].n}» белгісін тап`,layout:"signs",why,opts:[k,...others].map(x=>({t:`<svg viewBox="0 0 100 100" role="img" aria-label="Жол белгісі"><use href="#s-${x}"/></svg>`,cap:SG[x].n,ok:x===k}))};
+ });
+}
+function startG3(){
+ const cs=[["warn","ped","қызыл жиекті үшбұрыш"],["prio","main","ромб, төңкерілген үшбұрыш, сегізбұрыш"],["proh","speed40","қызыл жиекті дөңгелек"],["mand","straight","көк дөңгелек"],["info","bus","көк төртбұрыш"],["serv","aid","көк төртбұрыш + қызмет суреті"]]
+  .map(([c,k,d])=>`<div class="catc">${SIGN(k,CATS[c])}<b>${CATS[c]}</b>${d}</div>`).join("");
+ intro($("#g3 .gcard"),{ico:"🕵️",title:"Жол белгілерінің детективі",html:`<p>Жол белгілерінің пішіні мен түсі олардың мағынасын көрсетеді. Алдымен 6 топты қарап шық, содан кейін 10 тапсырманы орында.</p><div class="cats">${cs}</div>`,btn:"Детектив болып бастаймын!",go:runG3});
+}
+function runG3(){
+ quiz($("#g3 .gcard"),{key:"g3",title:"Жол белгілерінің детективі",pts:10,items:g3items(),replay:runG3,alwaysWhy:true});
+}
+
+/* ---------- 4-ойын: Қауіпсіз бе, қауіпті ме? (drag & drop) ---------- */
+const G4=[
+ {t:"Жолды тек жаяу жүргіншілер өткелінде, жасыл бағдаршам жанғанда өту",a:"safe",why:"Өткелде және жасыл жарықта өту — ең қауіпсіз жол. Өтер алдында екі жаққа қарап ал."},
+ {t:"Біреуді мазақтап жатқанын көрсем, мұғалімге немесе сенімді ересекке айту",a:"safe",why:"Ересекке айту — шағымдану емес, көмек сұрау. Бұл буллингті тоқтатады."},
+ {t:"Төтенше жағдайда 112 немесе тиісті қызметтің нөміріне қоңырау шалу",a:"safe",why:"Жылдам әрі нақты қоңырау өмірді сақтап қалуы мүмкін."},
+ {t:"Желіде қорлаған адамды бұғаттап, скриншот сақтап, ересекке көрсету",a:"safe",why:"Бұғаттау мен дәлел сақтау сені қорғайды."},
+ {t:"Қиын сәтте 111 Бала сенім телефонына қоңырау шалу",a:"safe",why:"111 — тегін әрі құпия, сені тыңдайтын маман бар."},
+ {t:"Телефонға қарап, құлаққап тағып, жолды қарамай кесіп өту",a:"danger",why:"Назар бөлінгенде көлікті көрмейсің де, естімейсің де. Жолда телефонды қалтаға сал."},
+ {t:"Сыныптасының ыңғайсыз суретін чатқа жіберіп, күлу",a:"danger",why:"Бұл кибербуллинг болып саналады. Біреудің суретін рұқсатсыз таратпа."},
+ {t:"Ойын үшін 112 немесе 101 нөміріне жалған қоңырау шалу",a:"danger",why:"Жалған қоңырау қызметті нағыз көмек керек адамнан алыстатады."},
+ {t:"Өрт болғанда лифтпен төмен түсуге тырысу",a:"danger",why:"Өрт кезінде лифт тоқтап қалуы мүмкін. Баспалдақпен түсіп, 101-ге қоңырау шал."},
+ {t:"Бөтен адамға желіде үйдің мекенжайы мен құпия сөздерді айту",a:"danger",why:"Жеке деректер — құпия. Оларды тек сенімді жақындарыңа ғана айт."}
+];
+function startG4(){
+ intro($("#g4 .gcard"),{ico:"🚦",title:"Қауіпсіз бе, қауіпті ме?",html:`<p>Экрандағы әрекеттерді дұрыс жәшікке орналастыр: <b style="color:#127a3e">✅ Қауіпсіз</b> немесе <b style="color:#b5271d">⚠️ Қауіпті</b>.</p><p>📱 Карточканы <b>сүйреп апарып</b> тастауға болады немесе <b>басып таңдап</b>, сосын жәшікті бас.</p>`,btn:"Бастаймыз!",go:runG4});
+}
+function runG4(){
+ const root=$("#g4 .gcard");let placed=0,score=0,right=0,sel=null;const n=G4.length;
+ root.innerHTML=`<div class="g4h"><span class="tag">Қауіпсіз бе, қауіпті ме?</span><b id="g4c">0 / ${n}</b></div>
+ <div class="dots" id="g4d">${G4.map(()=>"<i></i>").join("")}</div>
+ <p class="hint">Карточканы сүйреп апар немесе басып таңдап, сосын жәшікті бас 👇</p>
+ <div class="pool" id="pool"></div>
+ <div class="buckets"><div class="bucket safe" data-b="safe" tabindex="0" role="button" aria-label="Қауіпсіз жәшігі"><h3>✅ Қауіпсіз</h3><div class="drop" data-d="safe"></div></div>
+ <div class="bucket danger" data-b="danger" tabindex="0" role="button" aria-label="Қауіпті жәшігі"><h3>⚠️ Қауіпті</h3><div class="drop" data-d="danger"></div></div></div>
+ <div id="g4fb"></div>`;
+ const pool=$("#pool",root),buckets=$$(".bucket",root);
+ const bucketAt=(x,y)=>{const e=document.elementsFromPoint(x,y).find(n=>n.dataset&&n.dataset.b);return e?e.dataset.b:null};
+ const setHover=b=>buckets.forEach(el=>el.classList.toggle("hover",el.dataset.b===b));
+ function select(el){
+  if(sel&&sel!==el)sel.classList.remove("sel");
+  if(sel===el){el.classList.remove("sel");sel=null}else{el.classList.add("sel");sel=el;sfx.click()}
+  buckets.forEach(b=>b.classList.toggle("armed",!!sel));
+ }
+ function place(el,b){
+  const c=el._c;if(el.classList.contains("placed"))return;
+  if(sel){sel.classList.remove("sel");sel=null}buckets.forEach(x=>x.classList.remove("armed","hover"));
+  const ok=c.a===b;
+  el.style.cssText="";el.classList.remove("dragging","sel");el.classList.add("placed",ok?"good":"learn");el.removeAttribute("tabindex");
+  $(`.drop[data-d="${c.a}"]`,root).appendChild(el);
+  placed++;$("#g4c",root).textContent=`${placed} / ${n}`;$$("#g4d i",root)[placed-1].style.background=ok?"#27ae60":"#f0a22b";
+  const name={safe:"Қауіпсіз",danger:"Қауіпті"}[c.a];
+  if(ok){score+=10;right++;sfx.ok();const r=el.getBoundingClientRect();burst(20,r.left+r.width/2,r.top)}else sfx.no();
+  $("#g4fb",root).innerHTML=`<div class="fb ${ok?"good":"soft"}" role="status"><div class="fi">${ok?"🎉":"💙"}</div><div class="ft"><b>${ok?"Дұрыс! +10 ұпай":"Ештеңе етпейді! Бұл — «"+name+"»."}</b><p>${c.why}</p></div></div>`;
+  if(placed===n)setTimeout(()=>result(root,{key:"g4",title:"Қауіпсіз бе, қауіпті ме?",score,max:n*10,right,total:n,replay:runG4}),1800);
+ }
+ shuffle(G4).forEach(c=>{
+  const el=document.createElement("div");el.className="dcard";el.tabIndex=0;el.setAttribute("role","button");el.textContent=c.t;el._c=c;pool.appendChild(el);
+  let sx,sy,dx,dy,drag=false,ph=null,pid=null,rect=null;
+  el.addEventListener("pointerdown",e=>{if(el.classList.contains("placed"))return;pid=e.pointerId;try{el.setPointerCapture(pid)}catch(_){}rect=el.getBoundingClientRect();sx=e.clientX;sy=e.clientY;dx=sx-rect.left;dy=sy-rect.top;drag=false});
+  el.addEventListener("pointermove",e=>{
+   if(pid!==e.pointerId)return;
+   if(!drag&&Math.hypot(e.clientX-sx,e.clientY-sy)>6){
+    drag=true;ph=document.createElement("div");ph.className="dcard ph";ph.style.width=rect.width+"px";ph.style.height=rect.height+"px";el.parentNode.insertBefore(ph,el);el.classList.add("dragging");el.style.width=rect.width+"px";
+   }
+   if(drag){el.style.left=(e.clientX-dx)+"px";el.style.top=(e.clientY-dy)+"px";setHover(bucketAt(e.clientX,e.clientY))}
+  });
+  const end=e=>{
+   if(pid!==e.pointerId)return;pid=null;try{el.releasePointerCapture(e.pointerId)}catch(_){}
+   setHover(null);
+   if(drag){const b=bucketAt(e.clientX,e.clientY);el.classList.remove("dragging");el.style.cssText="";if(ph){ph.replaceWith(el);ph=null}drag=false;if(b)place(el,b);else sfx.click()}
+   else if(e.type==="pointerup")select(el);
+  };
+  el.addEventListener("pointerup",end);el.addEventListener("pointercancel",end);
+  el.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();select(el)}});
+ });
+ buckets.forEach(b=>{
+  const go=()=>{if(sel)place(sel,b.dataset.b)};
+  b.addEventListener("click",go);b.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();go()}});
+ });
+}
+
+/* ---------- қорытынды миссия: Қауіпсіздік кодын тап ---------- */
+const CODE="ҚОРҒА";
+const FIN=[
+ {tag:"Буллинг",q:"Сыныптасың желіде мазақталып жатыр. Ең дұрыс әрекет қайсы?",why:"Мазақтауға қатыспай, жәбірленушіні қолдап, ересекке айту — дұрыс жол.",opts:[
+  {t:"Мазақтауға қосылып, «лайк» басамын."},{t:"Қолдау жазып, мазақтауды таратпаймын және мұғалімге айтамын.",ok:1},{t:"Көрмегендей боламын."}]},
+ {tag:"Жедел нөмір",q:"Үйде газ иісі сезілді. Не істейсің?",why:"Газ иісі болса, жарықты қоспа, от жақпа. Терезені ашып, үйден шығып барып, 104 (немесе 112) нөміріне қоңырау шал.",opts:[
+  {t:"Жарықты қосып, иіс қайдан келіп жатқанын қараймын."},{t:"Сіріңке жағып, түтікті тексеремін."},{t:"Терезені ашып, үйден шығамын да, 104 нөміріне қоңырау шаламын.",ok:1}]},
+ {tag:"Жол белгісі",q:"Бұл белгі нені білдіреді?",visual:`<div class="signbox">${SIGN("noentry","Жол белгісі")}</div>`,why:"Қызыл дөңгелек пен ақ жолақ — «Кіруге тыйым салынады». Бұл тыйым салу белгісі.",opts:[
+  {t:"Жылдамдықты шектеу"},{t:"Кіруге тыйым салынады",ok:1},{t:"Жол беріңіз"}]},
+ {tag:"Сенім телефоны",q:"Біреу сені үнемі қорқытады, ал ересекке айтуға қорқасың. Қай нөмірге қоңырау шалуға болады?",why:"111 — Бала сенім телефоны: тегін, құпия, сені тыңдайтын маман бар.",opts:[
+  {t:"103"},{t:"111",ok:1},{t:"104"}]},
+ {tag:"Қауіпсіз жол",q:"Жасыл бағдаршам жанды. Жолдан қалай өтесің?",why:"Жасыл жанса да, екі жаққа қарап, көліктердің тоқтағанына көз жеткізіп өту керек.",opts:[
+  {t:"Телефонға қарап, жүгіріп өтемін."},{t:"Екі жаққа қарап, көліктердің тоқтағанына көз жеткізіп өтемін.",ok:1},{t:"Көліктерге қарамай өтемін."}]}
+];
+function startFin(){
+ intro($("#fin .gcard"),{ico:"🔐",title:"Қауіпсіздік кодын тап",html:`<p>Сен үш негізгі миссиядан өттің — қорытынды миссия ашылды! 5 аралас сұраққа жауап бер. Әр сұрақ <b>қауіпсіздік кодының</b> бір әрпін ашады. Әр сұрақ — 20 ұпай.</p><div class="code">${CODE.split("").map(()=>'<span class="cell">?</span>').join("")}</div>`,btn:"Кодты іздеймін!",go:runFin});
+}
+function runFin(){
+ quiz($("#fin .gcard"),{key:"fin",title:"Қауіпсіздік кодын тап",pts:20,items:FIN,replay:runFin,
+  top:i=>`<div class="code">${CODE.split("").map((c,k)=>`<span class="cell ${k<i?"open":""}">${k<i?c:"?"}</span>`).join("")}</div>`,
+  onAnswer:(it,ok,i,root)=>{const c=$$(".cell",root)[i];if(c){c.classList.add("open");c.textContent=CODE[i]}},
+  extra:sc=>{
+   const val=k=>k==="fin"?Math.max(S.score.fin||0,sc):(S.score[k]||0);
+   const rows=ORDER.map(k=>`<tr><td>${M[k].n}. ${M[k].name}</td><td>${val(k)} / ${M[k].max}</td></tr>`).join("");
+   const tot=ORDER.reduce((a,k)=>a+M[k].max,0);
+   return `<div class="code">${CODE.split("").map(c=>`<span class="cell open">${c}</span>`).join("")}</div><p><b>🔓 Қауіпсіздік коды табылды: ${CODE}!</b></p><table class="sumt">${rows}<tr><td><b>Қорытынды ұпай</b></td><td id="sumTot">—</td></tr></table>`;
+  },
+  btns:[{t:"🏅 Сертификат алу",cls:"yellow",f:()=>open("cert")}],
+  onFinish:()=>{const t=$("#sumTot");if(t){const m=ORDER.reduce((a,k)=>a+M[k].max,0);t.textContent=total()+" / "+m}}});
+}
+const START={g1:()=>intro($("#g1 .gcard"),{ico:"🕵️‍♀️",title:"Буллинг детекторы",html:`<p>Мектепте және желіде түрлі жағдайлар болады. 6 жағдаятты оқып, <b>ең дұрыс әрекетті</b> таңда. Әр жауаптан кейін түсіндірме көресің.</p><p>Қателессең — ештеңе етпейді, дұрыс жауапты бірге талдаймыз 💙</p>`,btn:"Бастаймыз!",go:runG1}),g2:startG2,g3:startG3,g4:startG4,fin:startFin};
+
+/* ---------- сертификат ---------- */
+function renderCert(){
+ const inp=$("#certName");inp.value=S.name||"";
+ const apply=()=>{$("#certNm").textContent=inp.value.trim()||"Оқушы";S.name=inp.value;save()};
+ inp.oninput=apply;apply();
+ let d;try{d=new Date().toLocaleDateString("kk-KZ",{day:"numeric",month:"long",year:"numeric"})}catch(e){d=new Date().toLocaleDateString()}
+ $("#certDate").textContent=d;
+ const m=ORDER.reduce((a,k)=>a+M[k].max,0);
+ $("#certScore").textContent=total()+" / "+m;
+ burst(50);sfx.win();
+}
+$("#printBtn").onclick=()=>{sfx.click();window.print()};
+
+renderHome();
+</script>
+</body>
+</html>
